@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <base href="/">
+        <link rel="icon" href="data:,">
+        <title>ManyURLs</title>
+    </head>
+    <body>
+        <h4 id="title"></h4>
+        <button id="nextUrl">Next</button>
+    </body>
+</html>
+
+<script>
+    // vvvvvvvvv PUT SNIPPET HERE vvvvvvvvv
+
+    // ^^^^^^^^^ PUT SNIPPET HERE ^^^^^^^^^
+
+    document.getElementById('title').textContent = location.href;
+
+    const words = ['foo', 'bar', 'gmail', 'gemma', 'pendo', 'freeze', 'reign', 'testing', 'other', 'word', 'hotmail', 'edu', 'com', 'net'];
+
+    function irand(bound = 2) {
+        return Math.floor(Math.random() * Math.floor(bound));
+    }
+
+    function wrand() {
+        return words[irand(words.length)];
+    }
+
+    function tokens(len) {
+        const tokens = [];
+        for (let i = 0; i < len; i++) {
+            tokens.push(wrand());
+        }
+        return tokens;
+    }
+
+    function srand(bound = 3) {
+        return tokens(1 + irand(bound)).join('-');
+    }
+
+    function user() {
+        return irand() ? `${srand()}:${wrand()}@` : '';
+    }
+
+    function path() {
+        return `/${tokens(3).join('/')}`;
+    }
+
+    function query() {
+        const keys = tokens(irand(4))
+        if (keys.length === 0) return '';
+        const params = keys.map((k) => `${k}=${wrand()}`);
+        return `?${params.join('&')}`;
+    }
+
+    function fragment() {
+        return irand() ? `#${srand()}` : '';
+    }
+
+    document.getElementById('nextUrl').addEventListener('click', () => {
+        const url = `http://${user()}localhost:8080${path()}${query()}${fragment()}`;
+        location.replace(url);
+    });
+</script>
